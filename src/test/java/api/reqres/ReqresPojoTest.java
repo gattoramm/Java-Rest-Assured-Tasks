@@ -1,6 +1,15 @@
-package api;
+package api.reqres;
 
 import static io.restassured.RestAssured.given;
+
+import api.reqres.colors.ColorsData;
+import api.reqres.registration.Register;
+import api.reqres.registration.SuccessUserReg;
+import api.reqres.registration.UnSuccessUserReg;
+import api.reqres.spec.Specification;
+import api.reqres.users.UserData;
+import api.reqres.users.UserTime;
+import api.reqres.users.UserTimeResponse;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,7 +17,7 @@ import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RequestTest {
+public class ReqresPojoTest {
     private static final String URL = "https://reqres.in/";
 
     @Test
@@ -44,7 +53,7 @@ public class RequestTest {
         String token = "QpwL5tke4Pnpja7X4";
         Register user = new Register("eve.holt@reqres.in", "pistol");
 
-        SuccessReg successReg = given()
+        SuccessUserReg successUserReg = given()
                 .body(user)
                 .when()
                 .post("api/register")
@@ -52,11 +61,11 @@ public class RequestTest {
                 .log()
                 .all()
                 .extract()
-                .as(SuccessReg.class);
-        Assert.assertNotNull(successReg.getId());
-        Assert.assertNotNull(successReg.getToken());
-        Assert.assertEquals(id, successReg.getId());
-        Assert.assertEquals(token, successReg.getToken());
+                .as(SuccessUserReg.class);
+        Assert.assertNotNull(successUserReg.getId());
+        Assert.assertNotNull(successUserReg.getToken());
+        Assert.assertEquals(id, successUserReg.getId());
+        Assert.assertEquals(token, successUserReg.getToken());
     }
 
     @Test
@@ -64,15 +73,15 @@ public class RequestTest {
         Specification.installSpecification(Specification.requestSpec(URL), Specification.responseSpecUnique(400));
         Register user = new Register("sydney@fife", "");
 
-        UnSuccessReg unSuccessReg = given()
+        UnSuccessUserReg unSuccessUserReg = given()
                 .body(user)
                 .post("api/register")
                 .then()
                 .log()
                 .all()
                 .extract()
-                .as(UnSuccessReg.class);
-        Assert.assertEquals("Missing password", unSuccessReg.getError());
+                .as(UnSuccessUserReg.class);
+        Assert.assertEquals("Missing password", unSuccessUserReg.getError());
     }
 
     @Test

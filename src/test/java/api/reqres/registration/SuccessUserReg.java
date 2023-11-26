@@ -1,12 +1,12 @@
-package api;
+package api.reqres.registration;
 
-public class SuccessReg {
+public class SuccessUserReg {
     private Integer id;
     private String token;
 
-    public SuccessReg() {}
+    public SuccessUserReg() {}
 
-    public SuccessReg(Integer id, String token) {
+    public SuccessUserReg(Integer id, String token) {
         this.id = id;
         this.token = token;
     }
